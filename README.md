@@ -44,14 +44,27 @@ you    /jobpilot:apply → forms are filled → you get a pre-submit summary →
 1. Install **Claude Desktop** (paid plan) and sign in.
 2. In Claude Settings → Connectors, connect **Notion** and **Gmail**.
 3. Install the **Claude in Chrome** extension. Sign in to **LinkedIn yourself** in Chrome. Never give Claude your password.
-4. Add the plugin. The repo is private, so the user needs read access (a GitHub collaborator invite) and an authenticated `git`/`gh` on their machine. In the Claude Code tab:
+4. Windows only: install [Git for Windows](https://git-scm.com/download/win) (the plugin's scripts run in bash).
+5. Create a folder such as `Documents/JobPilot` and put your CV in it. Open it in the Claude **Code** tab.
+6. Add the plugin with auto-update by merging this into `~/.claude/settings.json` (you can paste it to Claude and ask it to merge it):
+   ```json
+   {
+     "extraKnownMarketplaces": {
+       "jobpilot": {
+         "source": { "source": "github", "repo": "mertbezirgan/job-hunter-plugin" },
+         "autoUpdate": true
+       }
+     },
+     "enabledPlugins": { "jobpilot@jobpilot": true }
+   }
    ```
-   /plugin marketplace add mertbezirgan/job-hunter-plugin
-   /plugin install jobpilot@jobpilot
-   ```
-5. Create a folder such as `Documents/JobPilot`, open it in Claude (Code tab → choose folder, or Cowork) and run `/jobpilot:setup`.
+   Or, with the Claude Code CLI: `claude plugin install jobpilot --marketplace mertbezirgan/job-hunter-plugin`, then turn on auto-update under `/plugin` → Marketplaces.
+7. Start a new session in the same folder and run `/jobpilot:setup`.
 
 Requirements on the machine: Chrome or Edge (used for PDF rendering). Optional: [`uv`](https://docs.astral.sh/uv/) for extra Indeed/Glassdoor/Google Jobs search through JobSpy.
+
+### Updates
+The plugin doesn't pin a version, so every commit pushed to `main` is a new version. With `autoUpdate: true`, Claude Code downloads updates in the background during a session. Open sessions keep the old version until `/reload-plugins`; every new session, including scheduled runs, loads the latest.
 
 ## Safety by design
 
