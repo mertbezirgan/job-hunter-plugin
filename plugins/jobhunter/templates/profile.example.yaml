@@ -1,0 +1,90 @@
+# JobHunter profile — filled by /jobhunter:setup. Edit freely; every skill re-reads it.
+language:
+  ui: en                     # language Claude talks to you in (en, de, tr, …)
+  documents: match_posting   # match_posting | <fixed code, e.g. en>
+  documents_min_level: B2    # only write documents in a language you speak at least at this level
+  documents_fallback: en
+
+market:
+  countries: []              # e.g. [Germany] — loads reference/markets/<country>.md or <workspace>/markets/<country>.md
+  residence_country: ""      # where you live now
+
+personal:
+  first_name: ""
+  last_name: ""
+  email: ""
+  phone: ""                  # international format
+  city: ""
+  country: ""
+  address_line: ""           # only used where a letter/form needs a postal address (optional)
+  linkedin_url: ""
+  portfolio_url: ""
+  nationality: ""            # only shown where useful/required (optional)
+  share_dob: false
+  date_of_birth: ""
+
+eligibility:                 # wording here is used verbatim in forms
+  work_authorization: {}     # e.g. {Germany: "I will require an EU Blue Card; I meet the degree and salary requirements."}
+  needs_sponsorship: {}      # e.g. {Germany: true}
+  degree_recognition: ""     # e.g. "anabin H+ (ZAB statement available)"
+  willing_to_relocate: false
+  relocate_to: []
+  travel_pct_max: 0
+  driving_license: ""
+  extra: {}                  # market-specific (e.g. military_service for TR)
+
+targets:
+  titles: []
+  title_synonyms: []         # incl. local-language variants (Datenanalyst/in …)
+  skill_queries: []
+  seniority: []              # internship | entry | associate | mid-senior | director
+  years_experience: 0
+  stretch_years: 2
+  work_models: []            # ordered by preference: [Remote, Hybrid, On-site]
+  locations: []              # e.g. ["Berlin, Germany", "Munich, Germany"]
+  commute_radius_km: 30
+  remote_scope: []           # e.g. [Germany, EU]
+  employment_types: [full-time]
+  industries_preferred: []
+  industries_avoid: []
+  company_size: []           # startup | scaleup | mittelstand | enterprise | any
+  blacklist_companies: []
+  exclude_agencies: true
+  deal_breakers: []
+  must_haves: []
+
+compensation:
+  currency: EUR
+  period: yearly             # yearly | monthly
+  gross_or_net: gross
+  minimum: 0
+  expected: 0
+  answer_style: "single number at expected"   # or "range min–expected" / "negotiable"
+
+availability:
+  notice_period: ""
+  earliest_start: ""
+
+languages:                   # CEFR; certificates help
+  - {name: English, level: "", certificate: ""}
+
+documents:
+  cv_page_limit: 2
+  cv_photo: false
+  photo_file: ""             # profile/documents/photo.jpg if cv_photo
+  cv_signature: false
+  tone: "professional, warm, concise"
+  attachments_shareable: []  # files in profile/documents/ allowed to be uploaded (certificates, references)
+
+preferences:
+  follow_companies: false
+  talent_pool_consent: ask   # yes | no | ask
+  address_form: auto         # auto (Sie/du per posting) | formal
+
+eeo:
+  gender: "Prefer not to say"
+  ethnicity: "Prefer not to say"
+  disability: "Prefer not to say"
+  veteran: "Not a veteran"
+
+scoring_notes: []            # your calibration, e.g. "Prefer product companies over consultancies (-10 for consultancies)"

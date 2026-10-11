@@ -1,0 +1,80 @@
+<!doctype html>
+<!-- JobHunter ATS-safe CV template.
+     Fill every {{…}}; repeat .role / li / .skills p blocks as needed; DELETE optional blocks you don't use
+     (marked OPTIONAL). Single column, real text, standard headings in the document language.
+     Section heading names come from the market pack (e.g. Berufserfahrung / Experience). -->
+<html lang="{{lang}}">
+<head>
+<meta charset="utf-8">
+<title>{{first_name}} {{last_name}} - CV</title>
+<style>
+  @page { size: A4; margin: 13mm 15mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Calibri", "Carlito", "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 10.2pt; line-height: 1.34; color: #111; margin: 0; }
+  header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  h1 { font-size: 20pt; margin: 0 0 2px; letter-spacing: .2px; }
+  .headline { font-size: 11pt; color: #333; margin: 0 0 4px; }
+  .contact { font-size: 9.4pt; color: #333; margin: 0; }
+  .contact span + span::before { content: " | "; color: #999; }
+  .personal { font-size: 9.2pt; color: #444; margin: 2px 0 0; }
+  .photo { width: 30mm; height: 38mm; object-fit: cover; border-radius: 2px; }
+  h2 { font-size: 10.4pt; text-transform: uppercase; letter-spacing: .8px; border-bottom: 1px solid #999; padding-bottom: 2px; margin: 11px 0 5px; }
+  p { margin: 0; }
+  .entry { margin-bottom: 7px; page-break-inside: avoid; }
+  .row { display: flex; justify-content: space-between; gap: 12px; }
+  .row.main { font-weight: 600; }
+  .row.sub { color: #444; font-style: italic; margin-bottom: 2px; }
+  .dates { white-space: nowrap; }
+  ul { margin: 2px 0 0 16px; padding: 0; }
+  li { margin: 1px 0; }
+  .skills p { margin: 2px 0; }
+  .skills b { font-weight: 600; }
+  .sign { margin-top: 14px; font-size: 9.6pt; }
+  a { color: inherit; text-decoration: none; }
+</style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>{{first_name}} {{last_name}}</h1>
+      <p class="headline">{{headline_tailored_to_role}}</p>
+      <p class="contact"><span>{{city}}, {{country}}</span><span>{{phone}}</span><span>{{email}}</span><span>{{linkedin_url}}</span><span>{{portfolio_url}}</span></p>
+      <!-- OPTIONAL personal line (market pack decides): work permit / nationality / DOB -->
+      <p class="personal">{{work_permit_or_nationality_line}}</p>
+    </div>
+    <!-- OPTIONAL photo (only if documents.cv_photo) -->
+    <img class="photo" src="{{photo_file_url}}" alt="">
+  </header>
+
+  <h2>{{h_summary}}</h2>
+  <p>{{summary_2_3_lines}}</p>
+
+  <h2>{{h_experience}}</h2>
+  <div class="entry">
+    <div class="row main"><span>{{title_exact_as_in_master_cv}}</span><span class="dates">{{start}} – {{end}}</span></div>
+    <div class="row sub"><span>{{company}}</span><span>{{location}}</span></div>
+    <ul>
+      <li>{{bullet_most_relevant_first}}</li>
+    </ul>
+  </div>
+
+  <h2>{{h_education}}</h2>
+  <div class="entry">
+    <div class="row main"><span>{{degree}}</span><span class="dates">{{start}} – {{end}}</span></div>
+    <div class="row sub"><span>{{school}}, {{school_location}}</span><span>{{grade_if_in_source}}</span></div>
+  </div>
+
+  <h2>{{h_skills}}</h2>
+  <div class="skills">
+    <p><b>{{group_name}}:</b> {{skills_ordered_by_jd_relevance}}</p>
+  </div>
+
+  <h2>{{h_languages}}</h2>
+  <p>{{languages_with_cefr_and_certificates}}</p>
+
+  <!-- OPTIONAL sections only if present in master-cv.md: Certifications / Projects / Volunteering / Publications -->
+
+  <!-- OPTIONAL (documents.cv_signature): place, date, name -->
+  <p class="sign">{{place}}, {{date_localized}}<br>{{first_name}} {{last_name}}</p>
+</body>
+</html>

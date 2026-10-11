@@ -1,6 +1,6 @@
-# JobPilot ✈️ — an end-to-end job search copilot for Claude
+# JobHunter 🎯 — an end-to-end job search copilot for Claude
 
-JobPilot is a Claude plugin (skills + subagents + scripts) that turns Claude Code / Cowork into a job-search assistant:
+JobHunter is a Claude plugin (skills + subagents + scripts) that turns Claude Code / Cowork into a job-search assistant:
 
 - **finds** every relevant opening: LinkedIn search sweeps and recommended collections, LinkedIn job-alert emails, and local sources for your market (for Germany: Bundesagentur für Arbeit API, Arbeitnow, StepStone, XING, company ATS boards…)
 - **evaluates** each job: hard filters, a calibrated fit score, a requirement-by-requirement match and posting-legitimacy checks
@@ -9,33 +9,33 @@ JobPilot is a Claude plugin (skills + subagents + scripts) that turns Claude Cod
 - **tracks** everything in Notion and reads replies from Gmail, then drafts follow-ups
 - **coaches** you for interviews (prep pack, mock interviews, debriefs) and shows what is working (`insights`)
 
-Nothing is hardcoded to one country or language. During setup you choose the language JobPilot talks to you in, your target countries (each loads a *market pack*) and how documents should be written (match the posting's language, or always one language).
+Nothing is hardcoded to one country or language. During setup you choose the language JobHunter talks to you in, your target countries (each loads a *market pack*) and how documents should be written (match the posting's language, or always one language).
 
 ## Daily flow
 
 ```
-08:00  /jobpilot:run  (scheduled)
+08:00  /jobhunter:run  (scheduled)
        ├─ sync    Gmail → Notion (interviews, rejections, viewed) + follow-up drafts
        ├─ hunt    LinkedIn + market sources → dedupe → filter → score (parallel agents) → Notion "Suggested"
        └─ prepare top N: tailored CV + cover letter (drafter → fact check → reviewer → PDF)
 you    Notion board: move the jobs you like to "To Apply"   (or tell Claude "apply to 1, 3, 5")
-you    /jobpilot:apply → forms are filled → you get a pre-submit summary → "yes" → submitted → Notion "Applied"
-18:00  /jobpilot:sync (scheduled)
+you    /jobhunter:apply → forms are filled → you get a pre-submit summary → "yes" → submitted → Notion "Applied"
+18:00  /jobhunter:sync (scheduled)
 ```
 
 ## Commands
 
 | Command | What it does |
 |---|---|
-| `/jobpilot:setup` | Onboarding and preference updates: language, markets, CV → master profile + story bank, a detailed preference interview, Notion/Gmail/browser checks, scheduling |
-| `/jobpilot:run` | The full daily pipeline (sync → hunt → prepare → digest). The scheduled task calls this. |
-| `/jobpilot:hunt` | Discovery + scoring + shortlist to Notion |
-| `/jobpilot:evaluate <link>` | Deep evaluation of one posting |
-| `/jobpilot:tailor <link>` | CV + cover letter (+ plain-text letter, short "why us") for one or more jobs |
-| `/jobpilot:apply` | Applies to the selected jobs, with your approval per application |
-| `/jobpilot:sync` | Gmail → Notion status updates, follow-up drafts |
-| `/jobpilot:interview <company>` | Prep pack, mock interview, debrief |
-| `/jobpilot:insights` | Funnel, what converts, score calibration, skill gaps and learning plan |
+| `/jobhunter:setup` | Onboarding and preference updates: language, markets, CV → master profile + story bank, a detailed preference interview, Notion/Gmail/browser checks, scheduling |
+| `/jobhunter:run` | The full daily pipeline (sync → hunt → prepare → digest). The scheduled task calls this. |
+| `/jobhunter:hunt` | Discovery + scoring + shortlist to Notion |
+| `/jobhunter:evaluate <link>` | Deep evaluation of one posting |
+| `/jobhunter:tailor <link>` | CV + cover letter (+ plain-text letter, short "why us") for one or more jobs |
+| `/jobhunter:apply` | Applies to the selected jobs, with your approval per application |
+| `/jobhunter:sync` | Gmail → Notion status updates, follow-up drafts |
+| `/jobhunter:interview <company>` | Prep pack, mock interview, debrief |
+| `/jobhunter:insights` | Funnel, what converts, score calibration, skill gaps and learning plan |
 
 **Subagents:** `job-scout` (API/feed discovery), `job-evaluator` (screening and full evaluation), `company-researcher` (cached company briefs), `application-drafter` (CV and letter), `hiring-manager-reviewer` (independent critique that returns exact edits).
 
@@ -45,21 +45,21 @@ you    /jobpilot:apply → forms are filled → you get a pre-submit summary →
 2. In Claude Settings → Connectors, connect **Notion** and **Gmail**.
 3. Install the **Claude in Chrome** extension. Sign in to **LinkedIn yourself** in Chrome. Never give Claude your password.
 4. Git must be installed (Claude Code clones the plugin with it). macOS: run `xcode-select --install` in Terminal if `git --version` asks for it. Windows: install [Git for Windows](https://git-scm.com/download/win) (also provides bash for the scripts).
-5. Create a folder such as `Documents/JobPilot` and put your CV in it. Open it in the Claude **Code** tab.
+5. Create a folder such as `Documents/JobHunter` and put your CV in it. Open it in the Claude **Code** tab.
 6. Add the plugin with auto-update by merging this into `~/.claude/settings.json` (you can paste it to Claude and ask it to merge it):
    ```json
    {
      "extraKnownMarketplaces": {
-       "jobpilot": {
+       "jobhunter": {
          "source": { "source": "github", "repo": "mertbezirgan/job-hunter-plugin" },
          "autoUpdate": true
        }
      },
-     "enabledPlugins": { "jobpilot@jobpilot": true }
+     "enabledPlugins": { "jobhunter@jobhunter": true }
    }
    ```
-   Or, with the Claude Code CLI: `claude plugin install jobpilot --marketplace mertbezirgan/job-hunter-plugin`, then turn on auto-update under `/plugin` → Marketplaces.
-7. Start a new session in the same folder and run `/jobpilot:setup`.
+   Or, with the Claude Code CLI: `claude plugin install jobhunter --marketplace mertbezirgan/job-hunter-plugin`, then turn on auto-update under `/plugin` → Marketplaces.
+7. Start a new session in the same folder and run `/jobhunter:setup`.
 
 Requirements on the machine: Chrome or Edge (used for PDF rendering). Optional: [`uv`](https://docs.astral.sh/uv/) for extra Indeed/Glassdoor/Google Jobs search through JobSpy.
 
@@ -79,13 +79,13 @@ The plugin doesn't pin a version, so every commit pushed to `main` is a new vers
 
 ```
 .claude-plugin/marketplace.json
-plugins/jobpilot/
+plugins/jobhunter/
 ├── .claude-plugin/plugin.json
 ├── skills/      setup · run · hunt · evaluate · tailor · apply · sync · interview · insights
 ├── agents/      job-scout · job-evaluator · company-researcher · application-drafter · hiring-manager-reviewer
 ├── reference/   conventions · evaluation · writing-rules · form-answering · linkedin-playbook · notion-schema
 │   └── markets/ germany · turkey · _template (other countries are researched and generated during setup)
-├── templates/   cv.html · cover-letter.html · profile / jobpilot / answers / story-bank examples
+├── templates/   cv.html · cover-letter.html · profile / jobhunter / answers / story-bank examples
 └── scripts/     render_pdf.sh · fact_check.sh · search_jobs.py
 ```
 
