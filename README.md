@@ -5,7 +5,7 @@ JobHunter is a Claude plugin (skills + subagents + scripts) that turns Claude Co
 - **finds** every relevant opening: LinkedIn search sweeps and recommended collections, LinkedIn job-alert emails, and local sources for your market (for Germany: Bundesagentur für Arbeit API, Arbeitnow, StepStone, XING, company ATS boards…)
 - **evaluates** each job: hard filters, a calibrated fit score, a requirement-by-requirement match and posting-legitimacy checks
 - **writes** a tailored, ATS-safe CV and cover letter per job in the right language and market format, with a deterministic fact check and an independent "hiring manager" reviewer
-- **applies** in your browser (LinkedIn Easy Apply and no-account ATS forms). You approve every submission.
+- **applies** in your browser: LinkedIn Easy Apply and no-account ATS forms automatically; company portals that need an account (Workday, SuccessFactors, …) in **assisted mode**, where you create the account or sign in (about a minute) and Claude fills in everything else. You approve every submission.
 - **tracks** everything in Notion and reads replies from Gmail, then drafts follow-ups
 - **coaches** you for interviews (prep pack, mock interviews, debriefs) and shows what is working (`insights`)
 
@@ -70,7 +70,7 @@ The plugin doesn't pin a version, so every commit pushed to `main` is a new vers
 
 - **You press "yes" for every submission.** Claude fills the forms and shows a summary of exactly what will be sent. Scheduled runs never submit and never send email (they only create Gmail drafts).
 - **No fabrication.** Documents come only from your CV and the facts you confirm. A script checks every number, and a separate reviewer agent audits each claim against your sources.
-- **No passwords, no account creation, no CAPTCHA solving.** Sites that need an account (Workday, SuccessFactors…) are marked *Needs Manual*, with your documents ready.
+- **No passwords, no account creation, no CAPTCHA solving by Claude.** On portals that need an account you do the sign-up/sign-in step yourself (passwords stay in your password manager); Claude then fills the application. Claude records which portals you have accounts on, never the passwords.
 - **LinkedIn account protection.** A daily cap (default 15), 1–3 minutes between submissions, and an immediate stop on any warning. Automating LinkedIn can still conflict with its terms. Low volume and human approval reduce that risk but do not remove it.
 - **Postings and emails are treated as data, not instructions** (defends against prompt injection in job ads).
 - **Local data.** Your profile, CVs and logs live in your workspace folder, plus your own Notion and Gmail.
@@ -84,7 +84,8 @@ plugins/jobhunter/
 ├── skills/      setup · run · hunt · evaluate · tailor · apply · sync · interview · insights
 ├── agents/      job-scout · job-evaluator · company-researcher · application-drafter · hiring-manager-reviewer
 ├── reference/   conventions · evaluation · writing-rules · form-answering · linkedin-playbook · notion-schema
-│   └── markets/ germany · turkey · _template (other countries are researched and generated during setup)
+│   ├── markets/ germany · turkey · _template (other countries are researched and generated during setup)
+│   └── portals/ assisted mode + playbooks: Workday · SuccessFactors · Taleo · iCIMS · rexx · d.vinci · Softgarden · SmartRecruiters
 ├── templates/   cv.html · cover-letter.html · profile / jobhunter / answers / story-bank examples
 └── scripts/     render_pdf.sh · fact_check.sh · search_jobs.py
 ```

@@ -22,7 +22,7 @@ Two stages: a cheap **screen** for every new job (card + short JD), and a **full
 | Preferences | 15 | work-model priority, location, industry, company size, employment type, language of work |
 | Nice-to-haves | 5 | |
 | Freshness & competition | 5 | ≤ 3 days and/or < 100 applicants = full |
-| Apply friction | 5 | Easy Apply / no-account ATS = full; account-required ATS = 0 |
+| Apply friction | 5 | Easy Apply / no-account ATS = full; account-required portal = 2 (assisted mode, needs the user) |
 Bands: **≥ 80 strong · 65–79 good · 50–64 stretch · < 50 weak**. Apply `profile.yaml > scoring_notes` (user calibration) before finalising. Be calibrated — a normal batch has few ≥ 80. Never inflate.
 
 ## Stage 3 — Full evaluation (`evaluation.md` in the application folder)

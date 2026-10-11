@@ -1,0 +1,12 @@
+# Candidate-portal accounts the user has created (one entry per company tenant).
+# NEVER store passwords, security answers or verification codes here — they belong in the password manager.
+# Maintained by /jobhunter:apply (assisted mode).
+[]
+# Example:
+# - company: Siemens
+#   portal: workday
+#   host: siemens.wd3.myworkdayjobs.com
+#   account_email: name@example.com
+#   created: 2026-10-12
+#   last_used: 2026-10-12
+#   notes: "'Use my last application' works; profile complete"

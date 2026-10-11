@@ -72,7 +72,7 @@ Visa signals: posting says "Visa sponsorship"/"relocation support"/"English-spea
 - Arbeitserlaubnis / Aufenthaltstitel → `eligibility` wording from setup.
 - Deutschkenntnisse / Englischkenntnisse → CEFR level.
 - Datenschutz consent (required to process the application) → part of the submission; list in pre-submit summary. "Talent pool" consent (keep data for future roles) → optional; follow `preferences.talent_pool_consent` (default ask once in setup).
-- Personio forms usually need no account; SuccessFactors/Workday/rexx often need an account → `Needs Manual`.
+- Personio forms usually need no account; SuccessFactors/Workday/rexx often need an account → assisted mode (see `reference/portals/`). rexx, d.vinci and Softgarden often send a double opt-in email that the applicant must click to confirm the application.
 
 ## 8. Salary research
 Sources: StepStone Gehaltsreport, Glassdoor DE, Kununu Gehalt, levels.fyi (tech), Gehalt.de, Tarif tables (public sector TVöD/TV-L). Always gross annual EUR. Note regional differences (München/Frankfurt/Hamburg higher; East lower).

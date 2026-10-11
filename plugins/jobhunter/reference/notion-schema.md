@@ -31,7 +31,7 @@ The Notion database is the **tracker** and the **selection board**: the user mov
 
 ## Status pipeline (order matters: never move backwards automatically)
 `Suggested` → `To Apply` → `Prepared` → `Applied` → `Viewed` → `Assessment` → `Interview` → `Offer` → `Hired`
-Side states: `Needs Manual` (user action required — reason in Next Action), `Rejected`, `Skipped` (user declined or below threshold), `Closed` (posting closed), `Withdrawn` (user withdrew).
+Side states: `Needs Manual` (user action required — reason in Next Action, e.g. "Portal account step pending (Workday) — run /jobhunter:apply", "CAPTCHA on page 2", "Confirm application via email link"), `Rejected`, `Skipped` (user declined or below threshold), `Closed` (posting closed), `Withdrawn` (user withdrew).
 
 ## Existing page migration
 If the user already tracks applications in a **plain page**, create the database "JobHunter Applications" **as a child of that page** and offer to import the old entries (company, role, date, result) so dedup and insights include history. If it's already a **database**, map existing columns and add only missing properties after asking. Never delete or rewrite the user's existing content.

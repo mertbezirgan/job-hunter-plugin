@@ -40,7 +40,8 @@ Batches (propose defaults from the CV):
 7. **Documents**: CV page limit, photo, signature, tone, address form (Sie/du auto).
 8. **Automation**: daily application cap (recommend 10–15; explain LinkedIn account risk), minimum score (default 65), shortlist size, how many top jobs to pre-prepare daily (`pre_tailor_top`, default 3; costs usage), run time (default weekdays 08:00), evening email sync, sources (market pack sources on/off, JobSpy, extra sites, target companies list).
 9. **Voluntary questions**: EEO defaults (decline), talent-pool consent, follow companies on LinkedIn.
-10. **Answer bank**: fill the obvious entries in `answers.yaml` (years with top 8 tools computed from the CV — confirm).
+10. **Company portals (assisted mode)**: explain that some jobs use company portals that need an account (Workday, SuccessFactors…): the user creates the account or signs in (≈ 1 min), Claude fills the rest. Ask which email to use for portal accounts (default `personal.email`, store as `personal.portal_account_email`) and recommend saving portal passwords in a password manager (macOS: Passwords app / iCloud Keychain; or 1Password/Chrome) — Claude never sees or stores them. Create `profile/portal-accounts.yaml` from `../../templates/portal-accounts.example.yaml`; ask whether she already has accounts on any company portals and record them (company, portal, host, email — no passwords).
+11. **Answer bank**: fill the obvious entries in `answers.yaml` (years with top 8 tools computed from the CV — confirm).
 Show a compact summary table; get an explicit OK.
 
 ## Step 4 — Notion tracker

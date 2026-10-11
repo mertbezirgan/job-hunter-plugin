@@ -13,6 +13,7 @@ personal:
   first_name: ""
   last_name: ""
   email: ""
+  portal_account_email: ""   # email for company-portal accounts (Workday etc.); defaults to email
   phone: ""                  # international format
   city: ""
   country: ""

@@ -54,7 +54,7 @@ For hard-filter pre-pass use card data only; open detail pages only for survivor
 ## 7. External "Apply"
 Click **Apply** → note the destination host. Classify:
 - **No account usually**: Greenhouse (`boards.greenhouse.io`, `job-boards.greenhouse.io`), Lever (`jobs.lever.co`), Ashby (`jobs.ashbyhq.com`), Workable (`apply.workable.com`), Personio (`*.jobs.personio.de/.com`), Join (`join.com`), Recruitee (`*.recruitee.com`), Teamtailor, SmartRecruiters (sometimes), Softgarden (sometimes) → fill like Easy Apply.
-- **Account usually required**: Workday (`myworkdayjobs.com`), SAP SuccessFactors, Taleo, iCIMS, rexx, Kariyer.net, d.vinci (sometimes) → `Needs Manual (account required)`, leave tab open, documents ready.
+- **Account usually required**: Workday (`myworkdayjobs.com`), SAP SuccessFactors, Taleo, iCIMS, rexx, Kariyer.net, d.vinci (sometimes) → **assisted mode** (`reference/portals/_assisted-mode.md`): the user creates the account / signs in, Claude fills the rest. Set Apply Type `ATS (account)`.
 - Look-alike hosts (`greenhouse.io.evil.com`, `evil-lever.co`) or unknown hosts asking for unusual data (ID scans, bank details, fees) → stop, legitimacy red flag.
 
 ## 8. Stop signals
