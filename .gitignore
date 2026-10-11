@@ -1,11 +1,11 @@
-# Personal data must never be committed (the workspace lives elsewhere, but just in case)
-profile/
-applications/
-jobs/
-interviews/
-companies/
-insights/
-markets/
-jobpilot.yaml
+# Personal workspace data must never be committed (root-anchored so plugin folders are not matched)
+/profile/
+/applications/
+/jobs/
+/interviews/
+/companies/
+/insights/
+/markets/
+/jobpilot.yaml
 __pycache__/
 .DS_Store
