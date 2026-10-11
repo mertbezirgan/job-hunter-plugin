@@ -1,0 +1,14 @@
+{
+  "name": "jobpilot",
+  "description": "JobPilot: an end-to-end, market-aware job search copilot for Claude.",
+  "owner": {
+    "name": "Mert Bezirgan"
+  },
+  "plugins": [
+    {
+      "name": "jobpilot",
+      "source": "./plugins/jobpilot",
+      "description": "End-to-end job search copilot for Claude: market-aware discovery (LinkedIn + local boards), fit evaluation, tailored CV and cover letter per posting, browser-based applications with human approval, Notion tracking and Gmail sync."
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "jobpilot",
+  "version": "0.2.0",
+  "description": "End-to-end job search copilot: market-aware discovery, fit evaluation, tailored CV + cover letter, browser applications with human approval, Notion tracking, Gmail sync, interview prep and insights.",
+  "author": {
+    "name": "Mert Bezirgan"
+  },
+  "keywords": ["jobs", "linkedin", "cv", "cover-letter", "notion", "gmail", "job-search", "germany"]
+}

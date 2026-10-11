@@ -1,0 +1,34 @@
+# Screening-question answer bank — matched semantically to form questions.
+# Grows automatically: new questions are asked once, confirmed by you, then saved here.
+# source: profile | computed | user-stated YYYY-MM-DD
+- q: "How many years of professional experience do you have?"
+  a: ""
+  source: computed
+- q: "Are you legally authorized to work in {country}?"
+  a: "→ eligibility.work_authorization[country]"
+  source: profile
+- q: "Will you now or in the future require visa sponsorship?"
+  a: "→ eligibility.needs_sponsorship[country]"
+  source: profile
+- q: "What are your salary expectations? / Gehaltsvorstellung"
+  a: "→ compensation"
+  source: profile
+- q: "Earliest start date / notice period? / Frühestmöglicher Eintrittstermin"
+  a: "→ availability"
+  source: profile
+- q: "Are you willing to relocate?"
+  a: "→ eligibility.willing_to_relocate"
+  source: profile
+- q: "German language level? / Deutschkenntnisse"
+  a: "→ languages"
+  source: profile
+- q: "English language level?"
+  a: "→ languages"
+  source: profile
+- q: "Why do you want to work here?"
+  a: "→ applications/<folder>/why-short.txt"
+  source: generated-per-job
+# Tool-specific examples (computed from master-cv.md):
+# - q: "How many years of experience do you have with SQL?"
+#   a: "3"
+#   source: computed
