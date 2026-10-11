@@ -44,7 +44,7 @@ you    /jobpilot:apply → forms are filled → you get a pre-submit summary →
 1. Install **Claude Desktop** (paid plan) and sign in.
 2. In Claude Settings → Connectors, connect **Notion** and **Gmail**.
 3. Install the **Claude in Chrome** extension. Sign in to **LinkedIn yourself** in Chrome. Never give Claude your password.
-4. Windows only: install [Git for Windows](https://git-scm.com/download/win) (the plugin's scripts run in bash).
+4. Git must be installed (Claude Code clones the plugin with it). macOS: run `xcode-select --install` in Terminal if `git --version` asks for it. Windows: install [Git for Windows](https://git-scm.com/download/win) (also provides bash for the scripts).
 5. Create a folder such as `Documents/JobPilot` and put your CV in it. Open it in the Claude **Code** tab.
 6. Add the plugin with auto-update by merging this into `~/.claude/settings.json` (you can paste it to Claude and ask it to merge it):
    ```json
