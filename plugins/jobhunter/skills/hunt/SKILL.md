@@ -1,6 +1,6 @@
 ---
 name: hunt
-description: Discover every new job that could fit the user's profile across LinkedIn (search sweeps, recommended collections, job-alert emails), the market pack's local sources (e.g. Bundesagentur für Arbeit, Arbeitnow, StepStone, XING) and optional extra sources; deduplicate, hard-filter, score with parallel evaluator agents, and push a ranked shortlist to Notion as "Suggested". Use for "find jobs", "search new jobs", "hunt", or as part of /jobhunter:run.
+description: Discover every new job that could fit the user's profile across LinkedIn (search sweeps, recommended collections, job-alert emails), the market pack's local sources (e.g. Bundesagentur für Arbeit, Arbeitnow, StepStone, XING) and optional extra sources; deduplicate, hard-filter, score with parallel evaluator agents, and write every scored job to Notion ("Suggested" or "Low Match"). Use for "find jobs", "search new jobs", "hunt", or as part of /jobhunter:run.
 ---
 
 # JobHunter hunt
@@ -31,17 +31,27 @@ Arguments: `--scheduled`, `--since <24h|week|month>`, `--only <source>`, free-te
 3. Score with `jobhunter:job-evaluator` agents in `screen` mode: batches of ~15 jobs, up to `limits.parallel_agents` in parallel; pass profile/master-cv/market pack paths and `language.ui`.
 4. Language/eligibility flags from the evaluator are kept for the Notion "Why".
 
-## 4. Shortlist → Notion
-1. Sort by score; take up to `limits.shortlist_size` with score ≥ `limits.min_score` (attended runs also mention the best 3 "stretch" jobs below the threshold).
-2. For each shortlisted job: create `applications/<date>_<company>_<role>/job.md` (URL, source, metadata, **full JD verbatim**). Run `job-evaluator` in `full` mode for the top 10 (parallel) → `evaluation.md`; others keep the screen result in `evaluation.md`.
-3. External-apply jobs: apply the aggregator rule (conventions §8) — find the employer ATS URL, store as Job URL; note "unconfirmed at employer" if not found.
-4. Create Notion rows (column mapping from `jobhunter.yaml`): Role, Company, Location, Country, Work Model, Job URL, Source, Apply Type, Job Language, Score, Why, Legitimacy, Status=`Suggested`, Found, Posted, Salary, Files, Job ID, Updated.
-5. Update `seen.jsonl` statuses (`suggested` / `skipped:<reason>`), `last_hunt_at`. Delete `jobs/tmp/`.
+## 4. Every scored job → Notion (do this IMMEDIATELY after scoring, before any further work)
+The user wants to see everything that was found, not only what was applied to. Writing to Notion is therefore not optional and happens before the expensive steps, so a long or interrupted run never loses it.
+1. For **every job that passed the hard filters and got a score**, create a Notion row (column mapping from `jobhunter.yaml`): Role, Company, Location, Country, Work Model, Job URL, Source, Apply Type, Job Language, Score, Why, Status, Found, Posted, Salary, Job ID, Updated.
+   - Status = `Suggested` when score ≥ `limits.min_score` (cap `limits.shortlist_size`; extra ones beyond the cap also `Suggested`, they just aren't pre-evaluated), otherwise `Low Match`.
+   - If the database's Status property lacks the `Low Match` (or `Filtered`) option, add the option to the database schema first (existing databases created before this version don't have it).
+   - If `notion.log_filtered` is true, also create rows for hard-filtered jobs with Status `Filtered` and the reason in Why (default false — those are only counted in the report).
+2. **Batch the writes**: create many pages per Notion tool call (the Notion connector accepts a list of pages; use batches of ~20–25) instead of one call per job. Keep property values short.
+3. **Verify**: query the database for rows with Found = today (count only) and compare with the number you meant to write; create any missing rows. Report the count.
+4. Update the local index (`jobs/seen.jsonl`) statuses: `suggested` / `low-match` / `filtered:<reason>`.
 
-## 5. Report
+## 5. Shortlist enrichment (updates existing rows)
+1. Shortlist = `Suggested` rows from this run, sorted by score, up to `limits.shortlist_size`.
+2. For each: create `applications/<date>_<company>_<role>/job.md` (URL, source, metadata, **full JD verbatim**). Run `job-evaluator` in `full` mode for the top 10 (parallel) → `evaluation.md`; others keep the screen result in `evaluation.md`.
+3. External-apply jobs: apply the aggregator rule (conventions §8) — find the employer ATS URL; note "unconfirmed at employer" if not found.
+4. **Update** (never re-create) their Notion rows: Job URL (if the employer URL was found), Legitimacy, refined Score/Why from the full evaluation, Files = folder path, Updated.
+5. Update `last_hunt_at`. Delete `jobs/tmp/`.
+
+## 6. Report
 Write `jobs/<date>-hunt.md`; attended: show in chat (in `language.ui`):
 ```
-🔎 Hunt <date> · 412 scanned (LinkedIn 230 · Arbeitsagentur 120 · Arbeitnow 40 · StepStone 22) → 96 new → 31 passed → 14 suggested
+🔎 Hunt <date> · 412 scanned (LinkedIn 230 · Arbeitsagentur 120 · Arbeitnow 40 · StepStone 22) → 96 new → 31 passed → 14 Suggested + 17 Low Match written to Notion
  #  Score  Role — Company (City · Model · Apply)                 Why
  1   88    Data Analyst — Acme (Berlin · Hybrid · Easy Apply)     SQL+Power BI exact; gap: dbt
  …

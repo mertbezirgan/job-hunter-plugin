@@ -5,6 +5,7 @@ notion:
   parent_page_id: ""
   properties: {}             # internal key -> actual column name (only where different from defaults)
   status_labels: {}          # internal status -> displayed label (if translated)
+  log_filtered: false        # also write hard-filtered jobs to Notion (Status "Filtered"); costs more tokens
 gmail:
   enabled: true
 browser: claude-in-chrome    # claude-in-chrome | built-in

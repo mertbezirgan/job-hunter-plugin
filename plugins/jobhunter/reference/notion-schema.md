@@ -31,6 +31,7 @@ The Notion database is the **tracker** and the **selection board**: the user mov
 
 ## Status pipeline (order matters: never move backwards automatically)
 `Suggested` → `To Apply` → `Prepared` → `Applied` → `Viewed` → `Assessment` → `Interview` → `Offer` → `Hired`
+Found but not shortlisted: `Low Match` (scored below `limits.min_score` — visible so the user can still pick it), `Filtered` (failed a hard filter; only written when `notion.log_filtered: true`).
 Side states: `Needs Manual` (user action required — reason in Next Action, e.g. "Portal account step pending (Workday) — run /jobhunter:apply", "CAPTCHA on page 2", "Confirm application via email link"), `Rejected`, `Skipped` (user declined or below threshold), `Closed` (posting closed), `Withdrawn` (user withdrew).
 
 ## Existing page migration
@@ -39,4 +40,5 @@ If the user already tracks applications in a **plain page**, create the database
 ## Views (create if the Notion tool supports it; otherwise tell the user how in one line)
 - **Board** grouped by Status (main selection UI)
 - **Today's suggestions**: Status = Suggested, sorted by Score desc
+- **Everything found**: all rows, sorted by Found desc then Score desc (incl. Low Match)
 - **Active pipeline**: Status in Applied…Offer
