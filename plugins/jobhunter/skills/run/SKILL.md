@@ -1,6 +1,7 @@
 ---
 name: run
 description: JobHunter daily pipeline orchestrator - syncs application emails into Notion, hunts and evaluates new jobs across all sources, prepares tailored CVs and cover letters for the top suggestions, and sends a digest. Designed for the daily scheduled task (--scheduled) but can be run manually. Never submits applications. Use for "daily run", "run the pipeline", "do today's job search".
+model: sonnet
 ---
 
 # JobHunter run (daily pipeline)
@@ -10,7 +11,7 @@ Read `../../reference/conventions.md` (relative to this skill's base directory).
 `--scheduled` = unattended: ask no questions, never submit, never send email; on blockers (not signed in, connector missing) skip that part and record it in the digest.
 
 ## Pipeline
-1. **Preflight** (≤ 1 min): workspace OK; Notion + Gmail tools present (ToolSearch); browser reachable and LinkedIn signed in (open `linkedin.com/feed/` once). Record what's unavailable.
+1. **Preflight** (≤ 1 min): `bash <plugin>/scripts/migrate.sh <ws>` (conventions §3); workspace OK; Notion + Gmail tools present (ToolSearch); browser reachable and LinkedIn signed in (open `linkedin.com/feed/` once). Record what's unavailable.
 2. **Sync** — run the workflow in `../sync/SKILL.md` (scheduled mode). Interview invites and offers go to the top of the digest.
 3. **Hunt** — run `../hunt/SKILL.md` (scheduled mode). Produces Notion rows with Status `Suggested`.
 4. **Prepare** — for the top `limits.pre_tailor_top` new suggestions (score ≥ `limits.min_score`, legitimacy not Suspicious): run the tailor workflow `../tailor/SKILL.md` (agents in parallel, max `limits.parallel_agents`). Keep their Status `Suggested`, set Next Action "Documents ready — move to To Apply to send". Also prepare any rows the user already moved to `To Apply` that have no documents yet (Status → `Prepared`).

@@ -1,11 +1,12 @@
 ---
 name: insights
 description: Analyse the user's job search so far - conversion funnel, which sources, roles, work models, languages, company types and apply routes lead to responses and interviews, whether fit scores predict outcomes, recurring skill gaps across shortlisted jobs with a learning plan, and concrete changes to targeting and settings. Use for "how is my job search going", "what's working", "why am I getting rejected", "skill gaps", "insights", weekly review.
+model: sonnet
 ---
 
 # JobHunter insights
 
-Read `../../reference/conventions.md` (relative to this skill's base directory). Data: Notion database (all rows), `jobs/seen.jsonl`, application folders (`evaluation.md`, `log.md`), `interviews/`, `jobhunter.yaml`, `profile.yaml`.
+Read `../../reference/conventions.md` (relative to this skill's base directory). Data: Notion database (all rows), discovery counts from `bash <plugin>/scripts/seen.sh stats <ws>` (never read `seen.tsv` directly), application folders (`evaluation.md`, `log.md`), `interviews/`, `jobhunter.yaml`, `profile.yaml`.
 
 Minimum data: ≥ 15 applications for funnel conclusions, ≥ 5 responses for score-vs-outcome. Below that, give descriptive stats and say conclusions are premature.
 

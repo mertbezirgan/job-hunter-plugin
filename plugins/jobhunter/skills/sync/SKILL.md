@@ -1,6 +1,7 @@
 ---
 name: sync
 description: Read application-related emails in Gmail (confirmations, "application viewed", assessments, interview invites, rejections, offers, recruiter messages) in any language, update the Notion tracker accordingly, and create Gmail follow-up drafts for stale applications. Use for "check my emails", "any responses?", "sync", "update Notion", or the evening scheduled task (--scheduled).
+model: sonnet
 ---
 
 # JobHunter sync

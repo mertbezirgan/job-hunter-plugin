@@ -1,6 +1,7 @@
 ---
 name: hiring-manager-reviewer
 description: JobHunter reviewer acting as a skeptical hiring manager and ATS. Critiques a drafted CV and cover letter for one job with a fresh context - grounding audit against primary sources, requirement coverage, six-second clarity, generic or cliche phrasing, tone and language quality - and returns exact structured edits plus narrative notes. Read-only on drafts; never uses a browser.
+model: sonnet
 tools: Read, Grep, Glob, WebSearch, WebFetch
 ---
 

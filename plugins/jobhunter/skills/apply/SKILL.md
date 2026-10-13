@@ -38,7 +38,8 @@ Submit this application? (yes / change: … / skip)
    - **skip** → close without submitting (LinkedIn: Discard), Status stays `Prepared`.
    - New answers → after confirming, append to `answers.yaml` (with `source: user-stated <date>`).
    A "yes" covers only this application.
-6. After a submission: Notion Status `Applied`, Applied = today, Updated, Next Action "Follow up on <date + 10 days>"; `log.md` in the folder (timestamp, URL, apply route, fields + answers, files, confirmation text); `seen.jsonl` status `applied`.
+6. After a submission: Notion Status `Applied`, Applied = today, Updated, Next Action "Follow up on <date + 10 days>"; `log.md` in the folder (timestamp, URL, apply route, fields + answers, files, confirmation text); index status `applied` (`printf "<id>	applied
+" | bash <plugin>/scripts/seen.sh status <ws>`).
 7. Wait 60–180 s (random) before the next **submit click** on LinkedIn; you may open and fill the next form meanwhile.
 8. Stop signals (playbook §8) → stop LinkedIn work, continue with group B if the user wants.
 

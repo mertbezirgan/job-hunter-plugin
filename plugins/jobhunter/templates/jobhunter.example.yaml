@@ -30,4 +30,6 @@ schedule:
 linkedin:
   geo_ids: {}
 last_hunt_at: null
+index:
+  notion_imported_at: null   # set after the one-time import of existing Notion rows into jobs/seen.tsv
 last_sync_at: null

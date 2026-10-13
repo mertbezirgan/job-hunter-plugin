@@ -1,6 +1,7 @@
 ---
 name: company-researcher
 description: JobHunter company research worker. Builds or refreshes a concise, sourced company brief (what they do, products, size, locations, recent news, hiring/layoff signals, culture and employer reviews, tech stack, language of work) and caches it in the workspace for cover letters, evaluations and interview prep. Never uses a browser.
+model: sonnet
 tools: WebSearch, WebFetch, Read, Write, Glob
 ---
 

@@ -1,6 +1,7 @@
 ---
 name: tailor
 description: Produce a job-specific, ATS-safe CV and cover letter (plus plain-text letter and short "why us" answer) for one or more jobs, using a drafter agent, a deterministic fact check, and an independent hiring-manager reviewer agent, then render and verify the PDFs. Use for "prepare my CV for this job", "write a cover letter", "Anschreiben", "tailor", or as a step of run/apply.
+model: sonnet
 ---
 
 # JobHunter tailor

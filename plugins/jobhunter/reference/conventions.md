@@ -14,7 +14,11 @@ Inject this line into every agent prompt: *"Talk to the user in `{language.ui}`.
 The target market(s) are chosen in setup (`profile.yaml > market.countries`). Market-specific knowledge lives in `reference/markets/<country>.md` (shipped packs) or `<workspace>/markets/<country>.md` (packs generated during setup for countries without a shipped pack, using `reference/markets/_template.md`). A pack contains: job sources + API details, search parameters, CV and cover-letter conventions, eligibility questions, salary conventions, common form questions, local vocabulary, common ATS systems. **Always load the pack(s) for the user's target countries** before hunting, evaluating, writing or applying. If the user targets several countries, load each and pick per job based on the job's location/jurisdiction (never from the posting language alone).
 
 ## 3. Workspace (user data)
-The plugin folder is read-only system code. All user data lives in the **workspace**: the folder the session is opened in, recognised by `jobhunter.yaml` at its root. If absent, check `~/JobHunter/`. If neither exists → tell the user to run `/jobhunter:setup` and stop.
+The plugin folder is read-only system code. All user data lives in the **workspace**: the folder the session is opened in, recognised by `jobhunter.yaml` (or the pre-rename `jobpilot.yaml`) at its root. If absent, check `~/JobHunter/`. If neither exists → tell the user to run `/jobhunter:setup` and stop.
+
+**Paths:** `<plugin>` means the plugin root as an **absolute** path = `<skill base directory>/../..` (resolve it once; commands run with the workspace as current directory, so relative `../../` paths would break). `<ws>` = absolute workspace path.
+
+**Step 0 of every skill — upgrade the workspace:** run `bash <plugin>/scripts/migrate.sh <workspace>` before reading any workspace file. It is idempotent, silent when there is nothing to do, and never deletes user data (it converts older layouts, e.g. `seen.jsonl` → `seen.tsv`, keeping the old files as backups). Mention any lines it prints to the user in one sentence.
 
 ```
 <workspace>/
@@ -31,7 +35,8 @@ The plugin folder is read-only system code. All user data lives in the **workspa
 ├── markets/                      # generated market packs (only for countries without a shipped pack)
 ├── companies/<slug>.md           # cached company research (TTL 30 days)
 ├── jobs/
-│   ├── seen.jsonl                # every job ever discovered (dedup memory)
+│   ├── seen.tsv                  # every job ever discovered — dedup index, ONLY via scripts/seen.sh, never Read it
+│   ├── seen.jsonl                # legacy index from older versions (kept as backup after migration)
 │   └── <date>-hunt.md / <date>-sync.md / <date>-run.md
 ├── applications/<yyyy-mm-dd>_<company-slug>_<role-slug>/
 │   ├── job.md                    # JD verbatim + URL + metadata (archived: postings disappear)
@@ -46,10 +51,10 @@ The plugin folder is read-only system code. All user data lives in the **workspa
 Plugin files are referenced relative to the skill's base directory: `<skill base>/../../reference/…`, `…/templates/…`, `…/scripts/…`. Agents receive absolute paths from the calling skill.
 
 ## 4. Tools
-- **Browser** (main conversation only — **never inside subagents**; one browser, one driver): prefer **Claude in Chrome** (`mcp__claude-in-chrome__*`, the user's real Chrome where they are signed in). Fallback: the desktop app's built-in browser (`mcp__Claude_Browser__*`). Load browser tools in ONE ToolSearch call. Prefer `get_page_text`/`read_page`/`find` over screenshots.
+- **Browser** (main conversation only — **never inside subagents**; one browser, one driver): prefer **Claude in Chrome** (`mcp__claude-in-chrome__*`, the user's real Chrome where they are signed in). Fallback: the desktop app's built-in browser (`mcp__Claude_Browser__*`). Load browser tools in ONE ToolSearch call. **Token rule for reading pages:** use the extraction snippets in `reference/linkedin-playbook.md` §4–§5 via the browser's `javascript_tool` first (a compact TSV/JSON of only the needed fields, ~10× cheaper); fall back to `get_page_text`; use `read_page` (full accessibility tree, ~17k tokens per page) only to find controls on forms, scoped with `ref_id`/`depth`/`filter: interactive` where possible. Never screenshot to read text.
 - **Notion** and **Gmail**: the claude.ai connectors. Find exact tool names with ToolSearch (`notion`, `gmail`); never guess.
 - **Subagents** (`jobhunter:*` agents) for parallelisable, browser-free work: `job-scout`, `job-evaluator`, `company-researcher`, `application-drafter`, `hiring-manager-reviewer`. Pass everything they need (absolute paths, resolved language, market pack path, inline JD text). Max 4 in parallel.
-- **Scripts**: `render_pdf.sh` (HTML→PDF via local Chrome/Edge), `fact_check.sh` (deterministic number/claim grounding), `search_jobs.py` (optional JobSpy; needs `uv`).
+- **Scripts**: `render_pdf.sh` (HTML→PDF via local Chrome/Edge), `fact_check.sh` (deterministic number/claim grounding), `seen.sh` (dedup index: `new`, `add`, `status`, `lookup`, `reposts`, `stats`), `migrate.sh` (workspace upgrades), `search_jobs.py` (optional JobSpy; needs `uv`).
 
 ## 5. Source-of-truth boundary (borrowed from career-ops; non-negotiable)
 - **Primary sources** (full trust): `master-cv.md`, `profile.yaml`, `answers.yaml`, and facts the user states in the current chat (write them to `master-cv.md` under "Confirmed additions" with date in the same turn — a fact that lives only in chat is lost next session).
@@ -68,7 +73,7 @@ Plugin files are referenced relative to the skill's base directory: `<skill base
 7. **Personal data** stays in the workspace, Notion and Gmail of the user. Never put personal data in URLs or send it anywhere else.
 
 ## 7. Dedup key
-`source_id` = LinkedIn job id (`/jobs/view/<id>`), Arbeitsagentur `refnr`, ATS job id, etc., prefixed by source (`li:4012345678`, `ba:10001-…`). Cross-source: same normalised company + normalised title + city = same job (normalise: lowercase, strip legal forms GmbH/AG/SE/Ltd/Inc/A.Ş./KG/& Co., strip gender tags "(m/w/d)", "(all genders)", "(f/m/x)"). Check `jobs/seen.jsonl` **and** the Notion database before adding anything.
+`source_id` = LinkedIn job id (`/jobs/view/<id>`), Arbeitsagentur `refnr`, ATS job id, etc., prefixed by source (`li:4012345678`, `ba:10001-…`). Cross-source: same normalised company + normalised title + city = same job (normalise: lowercase, strip legal forms GmbH/AG/SE/Ltd/Inc/A.Ş./KG/& Co., strip gender tags "(m/w/d)", "(all genders)", "(f/m/x)"). This normalisation is implemented in `scripts/seen.sh` — use it, never compare by hand: `seen.sh new <ws> < candidates.tsv` returns only unseen jobs (TSV columns: id, title, company, location, url). **Never Read `seen.tsv`/`seen.jsonl` into context and never query Notion per job for dedup.** Notion is read once per run, for rows the user changed (see hunt §2).
 
 ## 8. Aggregator rule (borrowed from career-ops)
 Listings on aggregators (LinkedIn, Indeed, StepStone, Glassdoor…) can be stale or reposted. For jobs that will be applied to via an external site, locate the same role on the **employer's own careers page/ATS** and treat that as canonical (apply there). Not found at employer → flag "unconfirmed at employer" (don't silently drop). Employer unidentifiable (agency "our client") → legitimacy signal; ask the user before preparing documents.
