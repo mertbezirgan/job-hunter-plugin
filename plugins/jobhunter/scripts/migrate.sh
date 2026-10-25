@@ -31,4 +31,15 @@ if [ -d "$ws/profile" ] && [ ! -f "$ws/profile/portal-accounts.yaml" ]; then
   cp "$here/../templates/portal-accounts.example.yaml" "$ws/profile/portal-accounts.yaml"
   log "created profile/portal-accounts.yaml"
 fi
+# M4 (2026-10-25): the plugin now handles LinkedIn's redesigned search page itself. Workspaces that got a
+# local stopgap note keep it (we never edit user files); just tell the user it can be removed.
+if [ -f "$ws/jobhunter.yaml" ] && grep -q "linkedin_extract_2026_10" "$ws/jobhunter.yaml" && [ ! -f "$ws/jobs/.m4-notice-shown" ]; then
+  log "the plugin now includes the LinkedIn redesign fix; the local workaround (tooling_notes.linkedin_extract_2026_10 in jobhunter.yaml, tools/linkedin-extract-cards.js) is no longer needed and can be removed — the plugin's playbook snippets take precedence"
+  mkdir -p "$ws/jobs"; : > "$ws/jobs/.m4-notice-shown"
+fi
+# M5 (2026-10-25): company watchlist registry
+if [ -d "$ws/profile" ] && [ ! -f "$ws/profile/companies.yaml" ]; then
+  cp "$here/../templates/companies.example.yaml" "$ws/profile/companies.yaml"
+  log "created profile/companies.yaml (company watchlist — add companies with /jobhunter:companies)"
+fi
 exit 0

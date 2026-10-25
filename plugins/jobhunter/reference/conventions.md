@@ -18,7 +18,7 @@ The plugin folder is read-only system code. All user data lives in the **workspa
 
 **Paths:** `<plugin>` means the plugin root as an **absolute** path = `<skill base directory>/../..` (resolve it once; commands run with the workspace as current directory, so relative `../../` paths would break). `<ws>` = absolute workspace path.
 
-**Step 0 of every skill — upgrade the workspace:** run `bash <plugin>/scripts/migrate.sh <workspace>` before reading any workspace file. It is idempotent, silent when there is nothing to do, and never deletes user data (it converts older layouts, e.g. `seen.jsonl` → `seen.tsv`, keeping the old files as backups). Mention any lines it prints to the user in one sentence.
+**Step 0 of every skill — upgrade the workspace:** run `bash <plugin>/scripts/migrate.sh <workspace>` before reading any workspace file. It is idempotent, silent when there is nothing to do, and never deletes user data (it converts older layouts, e.g. `seen.jsonl` → `seen.tsv`, keeping the old files as backups). Mention any lines it prints to the user in one sentence. If `jobhunter.yaml` contains user-written `tooling_notes` that override plugin instructions, follow them unless `migrate.sh` reports that issue as fixed in the plugin.
 
 ```
 <workspace>/
@@ -30,6 +30,7 @@ The plugin folder is read-only system code. All user data lives in the **workspa
 │   ├── story-bank.md             # STAR+R stories with provenance (DERIVED source, see §5)
 │   ├── answers.yaml              # screening-question answer bank (grows over time)
 │   ├── portal-accounts.yaml      # which company portals the user has accounts on (NO passwords)
+│   ├── companies.yaml            # company watchlist: careers pages checked on every hunt (/jobhunter:companies)
 │   ├── writing-style.md          # extracted style descriptors (optional)
 │   └── documents/                # certificates, references (Arbeitszeugnisse), language certs, diplomas
 ├── markets/                      # generated market packs (only for countries without a shipped pack)
@@ -53,8 +54,8 @@ Plugin files are referenced relative to the skill's base directory: `<skill base
 ## 4. Tools
 - **Browser** (main conversation only — **never inside subagents**; one browser, one driver): prefer **Claude in Chrome** (`mcp__claude-in-chrome__*`, the user's real Chrome where they are signed in). Fallback: the desktop app's built-in browser (`mcp__Claude_Browser__*`). Load browser tools in ONE ToolSearch call. **Token rule for reading pages:** use the extraction snippets in `reference/linkedin-playbook.md` §4–§5 via the browser's `javascript_tool` first (a compact TSV/JSON of only the needed fields, ~10× cheaper); fall back to `get_page_text`; use `read_page` (full accessibility tree, ~17k tokens per page) only to find controls on forms, scoped with `ref_id`/`depth`/`filter: interactive` where possible. Never screenshot to read text.
 - **Notion** and **Gmail**: the claude.ai connectors. Find exact tool names with ToolSearch (`notion`, `gmail`); never guess.
-- **Subagents** (`jobhunter:*` agents) for parallelisable, browser-free work: `job-scout`, `job-evaluator`, `company-researcher`, `application-drafter`, `hiring-manager-reviewer`. Pass everything they need (absolute paths, resolved language, market pack path, inline JD text). Max 4 in parallel.
-- **Scripts**: `render_pdf.sh` (HTML→PDF via local Chrome/Edge), `fact_check.sh` (deterministic number/claim grounding), `seen.sh` (dedup index: `new`, `add`, `status`, `lookup`, `reposts`, `stats`), `migrate.sh` (workspace upgrades), `search_jobs.py` (optional JobSpy; needs `uv`).
+- **Subagents** (`jobhunter:*` agents) for parallelisable, browser-free work: `job-scout`, `job-evaluator`, `company-researcher`, `career-page-researcher`, `application-drafter`, `hiring-manager-reviewer`. Pass everything they need (absolute paths, resolved language, market pack path, inline JD text). Max 4 in parallel.
+- **Scripts**: `render_pdf.sh` (HTML→PDF via local Chrome/Edge), `fact_check.sh` (deterministic number/claim grounding), `seen.sh` (dedup index: `new`, `add`, `status`, `lookup`, `reposts`, `stats`), `company_jobs.pl` (watchlist: reads companies' public job APIs/feeds, prints only matching jobs; needs perl + curl, both on macOS), `migrate.sh` (workspace upgrades), `search_jobs.py` (optional JobSpy; needs `uv`).
 
 ## 5. Source-of-truth boundary (borrowed from career-ops; non-negotiable)
 - **Primary sources** (full trust): `master-cv.md`, `profile.yaml`, `answers.yaml`, and facts the user states in the current chat (write them to `master-cv.md` under "Confirmed additions" with date in the same turn — a fact that lives only in chat is lost next session).

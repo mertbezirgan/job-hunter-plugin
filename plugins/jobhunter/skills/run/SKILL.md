@@ -21,8 +21,9 @@ Read `../../reference/conventions.md` (relative to this skill's base directory).
 JobHunter · <date>
 📬 Inbox: 1 interview invite (Acme, Tue 14:00) · 2 rejections · 1 viewed
 🔎 Hunt: 412 scanned → 96 new → 31 passed filters → 14 suggested (3 strong)
+🏢 Watchlist: 18 companies checked → 5 matching openings (2 new: Allianz, finAPI) · 1 needs re-research (SAP)
 📝 Ready to send: 5 (3 new + 2 from your To Apply list)
-⚠️ Needs you: LinkedIn sign-in expired · 2 portal applications ready for assisted mode (Workday, SuccessFactors) — ~1–2 min each in /jobhunter:apply · 1 application to confirm via email link
+⚠️ Needs you: (first, if it happened) LinkedIn page layout changed — snippet fallback used, plugin needs an update · LinkedIn sign-in expired · 2 portal applications ready for assisted mode (Workday, SuccessFactors) — ~1–2 min each in /jobhunter:apply · 1 application to confirm via email link
 Top today:
  1. 88  Data Analyst — Acme (Berlin · Hybrid · Easy Apply) — SQL/Power BI exact; gap: dbt   [docs ready]
  2. …

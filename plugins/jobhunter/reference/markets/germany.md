@@ -23,7 +23,7 @@ Load this pack when `profile.yaml > market.countries` contains Germany, or a job
 | **XING Jobs** (`xing.com/jobs`) | Browser search | DACH professional network; many Mittelstand roles. |
 | **Indeed DE / Glassdoor DE / Google Jobs** | `scripts/search_jobs.py --country germany` (JobSpy) | Optional (needs `uv`). |
 | **GermanTechJobs, Berlin Startup Jobs, Wellfound, Make it in Germany job board** | Browser / WebFetch | Tech & English-speaking roles; Make-it-in-Germany lists employers open to international hires. |
-| **Company career pages** | Public ATS APIs: Personio `https://<company>.jobs.personio.de/xml` (XML feed) or `.de`; Greenhouse `https://boards-api.greenhouse.io/v1/boards/<board>/jobs?content=true`; Lever `https://api.lever.co/v0/postings/<board>?mode=json`; Ashby `https://api.ashbyhq.com/posting-api/job-board/<board>`; SmartRecruiters `https://api.smartrecruiters.com/v1/companies/<id>/postings`; Join.com / Softgarden / Recruitee pages via WebFetch | For `jobhunter.yaml > sources.target_companies`. |
+| **Company career pages** | The user's company watchlist (`/jobhunter:companies`, `reference/company-sources.md`) — public ATS APIs: Personio `https://<company>.jobs.personio.de/xml` (XML feed) or `.de`; Greenhouse `https://boards-api.greenhouse.io/v1/boards/<board>/jobs?content=true`; Lever `https://api.lever.co/v0/postings/<board>?mode=json`; Ashby `https://api.ashbyhq.com/posting-api/job-board/<board>`; SmartRecruiters `https://api.smartrecruiters.com/v1/companies/<id>/postings`; Join.com / Softgarden / Recruitee pages via WebFetch | For `jobhunter.yaml > sources.target_companies`. |
 
 Kununu (`kununu.com`) = employer reviews — use in evaluation/company research, not as a job source.
 

@@ -16,7 +16,10 @@ sources:
   market_sources: true       # sources listed in the market pack(s) (e.g. Arbeitsagentur, Arbeitnow, StepStone, XING)
   jobspy: false              # Indeed/Glassdoor/Google via scripts/search_jobs.py (needs uv)
   extra_sites: []
-  target_companies: []       # [{name: "Acme", ats: greenhouse|lever|ashby|personio|smartrecruiters, board: "acme"}]
+  target_companies: []       # older setting; replaced by profile/companies.yaml (/jobhunter:companies imports entries from here once)
+companies:                   # company watchlist checks (profile/companies.yaml); built in setup from target titles/locations
+  title_re: ""               # case-insensitive regex on job titles, e.g. 'analyst|analytics|data|daten|\bbi\b' (single quotes in YAML)
+  loc_re: ""                 # regex on locations; jobs with unknown location are kept
 limits:
   daily_applications: 15
   max_pages_per_query: 6

@@ -1,0 +1,21 @@
+# Company watchlist — companies whose own careers pages JobHunter checks on every hunt.
+# Managed by /jobhunter:companies (add / remove / pause / list / check / refresh).
+# Each entry is researched once; hunts then read the jobs with the recorded method (no new searching).
+# Format and field meanings: plugin reference/company-sources.md
+[]
+# Example:
+# - name: Allianz
+#   website: https://www.allianz.de
+#   careers_url: https://careers.allianz.com/en/jobs.html
+#   ats: workday
+#   method: api
+#   board: https://allianz.wd3.myworkdayjobs.com/Allianz
+#   search: "analyst,data"
+#   list_hint: ""
+#   notes: ""
+#   status: active
+#   added: 2026-10-25
+#   verified: 2026-10-25
+#   last_checked: null
+#   last_result: ""
+#   failures: 0

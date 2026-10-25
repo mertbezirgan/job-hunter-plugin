@@ -2,7 +2,7 @@
 
 JobHunter is a Claude plugin (skills + subagents + scripts) that turns Claude Code / Cowork into a job-search assistant:
 
-- **finds** every relevant opening: LinkedIn search sweeps and recommended collections, LinkedIn job-alert emails, and local sources for your market (for Germany: Bundesagentur für Arbeit API, Arbeitnow, StepStone, XING, company ATS boards…)
+- **finds** every relevant opening: LinkedIn search sweeps and recommended collections, LinkedIn job-alert emails, and local sources for your market (for Germany: Bundesagentur für Arbeit API, Arbeitnow, StepStone, XING, company ATS boards…) It also checks the career pages of the companies on your **watchlist** directly.
 - **evaluates** each job: hard filters, a calibrated fit score, a requirement-by-requirement match and posting-legitimacy checks
 - **writes** a tailored, ATS-safe CV and cover letter per job in the right language and market format, with a deterministic fact check and an independent "hiring manager" reviewer
 - **applies** in your browser: LinkedIn Easy Apply and no-account ATS forms automatically; company portals that need an account (Workday, SuccessFactors, …) in **assisted mode**, where you create the account or sign in (about a minute) and Claude fills in everything else. You approve every submission.
@@ -36,8 +36,9 @@ you    /jobhunter:apply → forms are filled → you get a pre-submit summary �
 | `/jobhunter:sync` | Gmail → Notion status updates, follow-up drafts |
 | `/jobhunter:interview <company>` | Prep pack, mock interview, debrief |
 | `/jobhunter:insights` | Funnel, what converts, score calibration, skill gaps and learning plan |
+| `/jobhunter:companies` | Your company watchlist: add or remove companies; their own career pages are checked on every hunt |
 
-**Subagents:** `job-scout` (API/feed discovery), `job-evaluator` (screening and full evaluation), `company-researcher` (cached company briefs), `application-drafter` (CV and letter), `hiring-manager-reviewer` (independent critique that returns exact edits).
+**Subagents:** `job-scout` (API/feed discovery), `job-evaluator` (screening and full evaluation), `company-researcher` (cached company briefs), `career-page-researcher` (finds a watchlist company's careers page and the cheapest way to read it), `application-drafter` (CV and letter), `hiring-manager-reviewer` (independent critique that returns exact edits).
 
 ## Installation (end user, ~20 min)
 
@@ -81,13 +82,13 @@ The plugin doesn't pin a version, so every commit pushed to `main` is a new vers
 .claude-plugin/marketplace.json
 plugins/jobhunter/
 ├── .claude-plugin/plugin.json
-├── skills/      setup · run · hunt · evaluate · tailor · apply · sync · interview · insights
-├── agents/      job-scout · job-evaluator · company-researcher · application-drafter · hiring-manager-reviewer
-├── reference/   conventions · evaluation · writing-rules · form-answering · linkedin-playbook · notion-schema
+├── skills/      setup · run · hunt · evaluate · tailor · apply · sync · interview · insights · companies
+├── agents/      job-scout · job-evaluator · company-researcher · career-page-researcher · application-drafter · hiring-manager-reviewer
+├── reference/   conventions · evaluation · writing-rules · form-answering · linkedin-playbook · notion-schema · company-sources
 │   ├── markets/ germany · turkey · _template (other countries are researched and generated during setup)
 │   └── portals/ assisted mode + playbooks: Workday · SuccessFactors · Taleo · iCIMS · rexx · d.vinci · Softgarden · SmartRecruiters
 ├── templates/   cv.html · cover-letter.html · profile / jobhunter / answers / story-bank examples
-└── scripts/     render_pdf.sh · fact_check.sh · search_jobs.py
+└── scripts/     render_pdf.sh · fact_check.sh · seen.sh · migrate.sh · company_jobs.pl · search_jobs.py
 ```
 
 ## Credits (ideas borrowed with thanks)

@@ -44,6 +44,9 @@ Batches (propose defaults from the CV):
 11. **Answer bank**: fill the obvious entries in `answers.yaml` (years with top 8 tools computed from the CV — confirm).
 Show a compact summary table; get an explicit OK.
 
+## Step 3b — Company watchlist (optional but recommended)
+Ask: "Are there specific companies you'd love to work for? I'll check their own career pages on every search — many jobs appear there before (or instead of) LinkedIn." Accept any list (names, links, a pasted list). Then follow `../companies/SKILL.md` § add: build the title/location filters (`jobhunter.yaml > companies`), research all companies once with `career-page-researcher` agents in parallel, save `profile/companies.yaml`, and show the table (company · how it's checked · open · matching jobs). Tell the user they can change the list anytime with `/jobhunter:companies` ("add X", "remove Y", "pause Z", "show my companies").
+
 ## Step 4 — Notion tracker
 1. ToolSearch `notion`. Missing → ask the user to connect Notion (Claude Settings → Connectors), continue other steps, come back.
 2. Ask for their existing tracking page (link or name), search and read it.
@@ -77,6 +80,7 @@ Show the command card (in `language.ui`):
 - `/jobhunter:evaluate <link>` — deep-dive one job · `/jobhunter:tailor <link>` — CV + letter only
 - `/jobhunter:sync` — email → Notion, follow-up drafts
 - `/jobhunter:interview <company>` — interview prep & mock interview
+- `/jobhunter:companies` — your company watchlist: add, remove, pause, list, check now
 - `/jobhunter:insights` — what's working, skill gaps, calibration
 - `/jobhunter:setup` — change preferences
 Offer to start the first `/jobhunter:run` now.

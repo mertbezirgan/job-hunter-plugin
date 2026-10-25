@@ -17,6 +17,7 @@ Arguments: `--scheduled`, `--since <24h|week|month>`, `--only <source>`, free-te
   - **Browser (main thread, sequential)**: LinkedIn searches, LinkedIn collections, browser-only market sources (e.g. StepStone, XING), `extra_sites`.
   - **Agents (parallel, background)**: `jobhunter:job-scout` for API/feed sources from the market pack (e.g. Arbeitsagentur, Arbeitnow), `target_companies` ATS boards, JobSpy. Give each scout absolute paths, the term/location lists, window, source list and output file `jobs/tmp/scout-<source>.json`.
   - **Gmail**: LinkedIn job-alert emails (and any other job alert senders the market pack lists).
+  - **Company watchlist** (`profile/companies.yaml`, status `active`; see `../../reference/company-sources.md`): `api`/`rss` companies → one script call; `webfetch` companies → a `job-scout` agent; `browser` companies → main thread after LinkedIn. Never re-discover careers pages during a hunt — use the recorded method.
 - Attended: print the plan in one line, no confirmation needed.
 
 ## 2. Collect
@@ -25,11 +26,18 @@ Arguments: `--scheduled`, `--since <24h|week|month>`, `--only <source>`, free-te
    - **One-time Notion import** (only if `jobhunter.yaml > index.notion_imported_at` is missing): query all Notion rows (paginate; request only Job ID, Role, Company, Location, Job URL, Status) and feed them as TSV (`id title company location url`, status from Notion lowercased) into `seen.sh add <ws> <status>` grouped by status, so jobs the user already has in Notion are never re-suggested. Rows without a Job ID: use `notion:<page id>` as id. Then set `index.notion_imported_at`.
    - **Status sync from Notion:** query only rows edited since `last_hunt_at` (Notion "last edited time" filter) and pipe `id<TAB>status` into `seen.sh status <ws>`. Never query Notion per job.
 1. Launch the scout agents first (they run while you browse); each writes its own TSV + JSON (see `job-scout`).
-2. LinkedIn: session check → sweep per playbook §3 → on every results page run the playbook §4 snippet and append its TSV lines to `jobs/tmp/linkedin.tsv` (write with a shell heredoc; don't echo it back). 2–5 s pause between pages.
+   Include one scout for the watchlist's `webfetch` companies (pass each entry's `careers_url`, `list_hint`, name and the `companies.title_re`/`loc_re` filters; it writes `jobs/tmp/companies-web.tsv`).
+   **Company watchlist, api/rss (seconds, ~0 tokens):** build one command from all active `api`/`rss` entries and run it in the background while you browse:
+   `perl <plugin>/scripts/company_jobs.pl --title-re "<companies.title_re>" --loc-re "<companies.loc_re>" --since <days since last_hunt_at, min 1, first run 30> [--search "<entry.search>" per Workday/SmartRecruiters entry — run those entries as separate calls if their search terms differ] --source "<ats>|<board>|<name>" … > jobs/tmp/companies.tsv 2> jobs/tmp/companies.log`
+   Read only `companies.log` (one line per company) — not the TSV.
+2. LinkedIn: session check → **snippet self-test on the first results page** (playbook §4 status line; on `EXTRACTION_BROKEN` switch to the page-text fallback and flag it in the report — never skip the sweep silently) → sweep per playbook §3 → on every results page run the playbook §4 snippet and append its TSV lines to `jobs/tmp/linkedin.tsv` (write with a shell heredoc; don't echo it back). 2–5 s pause between pages.
 3. Browser-only market sources: same pattern (playbook §4, last paragraph), into `jobs/tmp/<source>.tsv`.
 4. Gmail alerts: extract ids from `/jobs/view/<id>` links → append as `li:<id>` lines to `jobs/tmp/linkedin.tsv` (title/company from the email).
+   **Company watchlist, browser entries:** for each, open `careers_url`, apply `list_hint`, extract job links with a playbook-§4-style snippet into `jobs/tmp/companies-browser.tsv` (ids `co:<company-slug>:<job id or URL slug>`); keep only titles/locations matching the filters.
+   **Update the watchlist health** in `profile/companies.yaml` from `companies.log` and the other checks: `last_checked`, `last_result`, `failures` (reset on success, +1 on error; `>= 2` → `status: needs-research` and re-research it with `jobhunter:career-page-researcher` at the end of this run).
 5. Wait for scouts. Dedup everything in one call — never by reading files or querying Notion:
    `cat jobs/tmp/*.tsv | bash <plugin>/scripts/seen.sh new <ws> > jobs/tmp/new.tsv` (prints `in · already seen · same job from another source · new`).
+   (Files are read in name order, so `companies*.tsv` comes before `linkedin.tsv`: when the same job is on the company site and on LinkedIn, the company-site record wins — that's the canonical employer URL per the aggregator rule. Source for these rows in Notion: `Company Site`.)
    Then record them: `bash <plugin>/scripts/seen.sh add <ws> new < jobs/tmp/new.tsv`. Only `jobs/tmp/new.tsv` goes on to filtering.
 
 ## 3. Filter & score
