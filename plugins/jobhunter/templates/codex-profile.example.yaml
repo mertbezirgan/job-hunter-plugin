@@ -1,0 +1,77 @@
+# Unknown values stay null/empty until confirmed. Empty lists are not exclusions.
+language:
+  ui: en
+  documents: match_posting
+  documents_min_level: B2
+  documents_fallback: en
+market:
+  countries: []
+  residence_country: null
+personal:
+  first_name: null
+  last_name: null
+  email: null
+  portal_account_email: null
+  phone: null
+  city: null
+  country: null
+  address_line: null
+  linkedin_url: null
+  portfolio_url: null
+  nationality: null
+  share_dob: false
+  date_of_birth: null
+eligibility:
+  work_authorization: {}
+  needs_sponsorship: {}
+  degree_recognition: null
+  willing_to_relocate: null
+  relocate_to: []
+  travel_pct_max: null
+  driving_license: null
+  extra: {}
+targets:
+  titles: []
+  title_synonyms: []
+  skill_queries: []
+  seniority: []
+  years_experience: null
+  stretch_years: 2
+  work_models: []
+  locations: []
+  commute_radius_km: null
+  remote_scope: []
+  employment_types: []
+  industries_preferred: []
+  industries_avoid: []
+  company_size: []
+  blacklist_companies: []
+  exclude_agencies: null
+  deal_breakers: []
+  must_haves: []
+compensation:
+  currency: null
+  period: null
+  gross_or_net: null
+  minimum: null
+  expected: null
+  answer_style: ask_when_required
+availability:
+  notice_period: null
+  earliest_start: null
+languages: []
+documents:
+  cv_page_limit: 2
+  cv_photo: false
+  photo_file: ""
+  cv_signature: false
+  tone: professional, clear, concise
+  attachments_shareable: []
+preferences:
+  follow_companies: false
+  talent_pool_consent: ask
+  address_form: auto
+eeo: {}
+scoring_notes: []
+# Paths/fields explicitly confirmed by the user; inferred ideas go in search-brief.md.
+confirmed_preferences: []

@@ -2,6 +2,14 @@
 
 Every push to `main` is a release (auto-update tracks commits). Newest first.
 
+## 2026-11-11 — Codex and ChatGPT workflow
+- Add a repo-local `$jobhunter` skill, `AGENTS.md`, Codex runtime/workflow guides and a portable ChatGPT prompt. Reuse the existing evaluation, writing, market and tracking resources without requiring Claude-specific tools, model aliases, Notion, or Gmail.
+- Add an idempotent Python workspace initializer with opt-in integrations, unknown-safe profile defaults, private workspace ignores and original-CV preservation.
+- Support applied-history import, explicit source coverage, local tracking, salary-undisclosed roles and preference-versus-hard-filter distinctions. Separate source facts, user statements and inferred search tracks.
+- Add isolated bootstrap and compatibility tests, including legacy migration and 100k-row deduplication. No live account access is needed by tests.
+- **Migration:** none; existing `migrate.sh` steps are reused unchanged. New workspace files are created only if missing.
+- **Compatibility:** additive; existing Claude skills, plugin manifests, status vocabulary, data columns and configured workspaces are unchanged. The new Codex defaults apply to newly initialised workspaces. Existing sessions retain their settings; avoid concurrent tracker writers.
+
 ## 2026-10-25 — LinkedIn redesign fix + company watchlist
 - **LinkedIn fix:** signed-in searches now redirect to the redesigned `/jobs/search-results/` page, where result cards are `div[role=button][componentkey="job-card-component-ref-<id>"]` without links, card text starts with screen-reader duplicates ("Selected, … (Verified job)"), and job pages have no description container. The playbook §4/§5 snippets now handle both layouts (componentkey ids, hidden-text removal, "About the job" text extraction), print a status line with a self-test (`EXTRACTION_BROKEN`), and the hunt must use a page-text fallback and flag "plugin needs an update" in the digest instead of silently skipping the LinkedIn sweep. Paging continues to the page limit because `sortBy=DD` is dropped (relevance order).
 - **Company watchlist:** new `/jobhunter:companies` skill, `career-page-researcher` agent, `reference/company-sources.md` and `scripts/company_jobs.pl` (Greenhouse, Lever, Ashby, SmartRecruiters, Workday, Personio, Recruitee, RSS; perl + curl only). Each company is researched once (careers page, ATS, cheapest working method: api → rss → webfetch → browser) and stored in `profile/companies.yaml`; every hunt checks all active companies with the recorded method, keeps only jobs matching `jobhunter.yaml > companies.title_re/loc_re`, and prefers the company-site record over the LinkedIn copy. Broken entries are re-researched automatically after two failed checks. Setup asks for the list (Step 3b).
