@@ -7,5 +7,12 @@
 /insights/
 /markets/
 /jobhunter.yaml
+/jobpilot.yaml
+/private/
+/tmp/
+/output/
+/workspace-export/
+/*.pdf
+/*.docx
 __pycache__/
 .DS_Store

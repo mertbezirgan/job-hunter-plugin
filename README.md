@@ -1,4 +1,10 @@
-# JobHunter 🎯 — an end-to-end job search copilot for Claude
+# JobHunter 🎯 — a job search copilot for Claude, Codex and ChatGPT
+
+**Codex:** open this repository and use `$jobhunter` (or ask in plain language).
+See [CODEX.md](CODEX.md) for the local workspace, optional integrations and setup.
+**ChatGPT:** [CHATGPT.md](CHATGPT.md) provides a portable prompt and file workflow.
+Personal CVs, salary preferences and application history stay in ignored local
+files. The original Claude plugin and installation below are unchanged.
 
 JobHunter is a Claude plugin (skills + subagents + scripts) that turns Claude Code / Cowork into a job-search assistant:
 
@@ -79,6 +85,9 @@ The plugin doesn't pin a version, so every commit pushed to `main` is a new vers
 ## Repository layout
 
 ```
+AGENTS.md                       # Codex repository instructions
+.agents/skills/jobhunter/        # Codex skill with all workflow modes
+CODEX.md / CHATGPT.md            # Codex setup and portable ChatGPT instructions
 .claude-plugin/marketplace.json
 plugins/jobhunter/
 ├── .claude-plugin/plugin.json
